@@ -20,7 +20,6 @@ public class SkillUnit : MonoBehaviour
         {
             Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             hit = Physics2D.Raycast(worldPoint, Vector2.zero);
-            Debug.Log(hit.collider);
             if(hit.collider.tag == "SkillObject")
             {
                 if (!skillObject.onClicked)

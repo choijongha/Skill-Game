@@ -2,6 +2,7 @@ using UnityEngine;
 public class SkillUnit : MonoBehaviour
 {
     [SerializeField] GameObject skillPanel;
+    [SerializeField] GameObject skillInto;
     private SkillObjectScript skillObject;
     private Camera mainCamera;
     private RaycastHit2D hit;
@@ -20,19 +21,24 @@ public class SkillUnit : MonoBehaviour
         {
             Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             hit = Physics2D.Raycast(worldPoint, Vector2.zero);
-            if(hit.collider.tag == "SkillObject")
+            if(hit.collider != null)
             {
-                if (!skillObject.onClicked)
+                Debug.Log(hit.collider.name);
+                if (hit.collider.tag == "SkillObject")
                 {
-                    skillObject.onClicked = true;
-                    skillPanel.SetActive(true);
+                    if (!skillObject.onClicked)
+                    {
+                        skillObject.onClicked = true;
+                        skillPanel.SetActive(true);
+                    }
+                    else
+                    {
+                        skillObject.onClicked = false;
+                        skillPanel.SetActive(false);
+                    }
                 }
-                else
-                {
-                    skillObject.onClicked = false;
-                    skillPanel.SetActive(false);
-                }
-            }  
+            }
+            
         }
     }
     

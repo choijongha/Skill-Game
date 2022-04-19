@@ -807,7 +807,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8861303955525101722, guid: 980563ba3dfa21c488c5a477527615b1, type: 3}
       propertyPath: m_Name
-      value: SkillChuChu
+      value: SkillImage
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 980563ba3dfa21c488c5a477527615b1, type: 3}

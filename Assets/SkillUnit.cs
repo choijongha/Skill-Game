@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
 
 public class SkillUnit : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class SkillUnit : MonoBehaviour
     private PointerEventData mPointerEventData;
     private EventSystem mEventSystem;
     GameObject skillInstantiation;
+    public TextMeshProUGUI skillInfo;
+    List<RaycastResult> results;
     private void Awake()
     {
         mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
@@ -28,6 +31,7 @@ public class SkillUnit : MonoBehaviour
     {
         MouseClickDown();
     }
+    // 마우스 클릭 시 
     private void MouseClickDown()
     {
         if (Input.GetMouseButtonDown(0))
@@ -39,12 +43,24 @@ public class SkillUnit : MonoBehaviour
             {
                 Debug.Log(hit.collider.name);
                 SkillObjectScript skillObjectScript = GameObject.Find(hit.collider.name).GetComponent<SkillObjectScript>();
+                if (!skillPanel.activeSelf)
+                {
+                    skillPanel.SetActive(true);
+                    // 클릭된 오브젝트와 연결된 프리팹 스킬 이미지 오브젝트 연결.
+                    skillInstantiation = skillObjectScript.InstantiateSkill();
+                }
+                else if(skillPanel.activeSelf && skillInstantiation.name == hit.collider.name)
+                {
+
+                }
                 
+
+                // 스킬패널 열림, 닫힘.
                 if (!skillObjectScript.onClicked)
                 {
                     skillObjectScript.onClicked = true;
-                    skillPanel.SetActive(true);
-                    skillInstantiation = skillObjectScript.InstantiateSkill();
+                    
+                    
                 }
                 else
                 {
@@ -52,9 +68,14 @@ public class SkillUnit : MonoBehaviour
                     skillPanel.SetActive(false);
                     Destroy(skillInstantiation);
                 }
+            }else if(hit.collider == null && results.Count <= 0)
+            {
+                skillPanel.SetActive(false);
+                Destroy(skillInstantiation);
             }
         }
     }
+    // UI 클릭 함수
     private void UIClick()
     {
         //Set up the new Pointer Event
@@ -63,15 +84,28 @@ public class SkillUnit : MonoBehaviour
         mPointerEventData.position = Input.mousePosition;
 
         //Create a list of Raycast Results
-        List<RaycastResult> results = new List<RaycastResult>();
+        results = new List<RaycastResult>();
 
         //Raycast using the Graphics Raycaster and mouse click position
         mRaycaster.Raycast(mPointerEventData, results);
 
-        //For every result returned, output the name of the GameObject on the Canvas hit by the Ray
-        foreach (RaycastResult result in results)
+        // UI가 클릭 되었을 때만 작동.
+        if(results.Count > 0)
         {
-            Debug.Log("Hit " + result.gameObject.name);
+            Debug.Log(results[0].gameObject.name);
+            // 클릭된 UI이름과 복사해 생긴 이미지 이름이 같다면 실행.
+            if(results[0].gameObject.name == skillInstantiation.name)
+            {
+                if (skillInto.activeSelf == true)
+                {
+                    skillInto.SetActive(false);
+                }
+                else
+                {
+                    skillInto.SetActive(true);
+                }
+                    
+            }
         }
     }
 

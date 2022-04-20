@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8861303955525101720}
   - component: {fileID: 227816998722907178}
   m_Layer: 5
-  m_Name: SkillChuChu
+  m_Name: SkillBingBing
   m_TagString: Skill
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 29c6aa601ca45f141a9fb2a164a601fb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7289efd84a99ebf409199b2ef45cb65d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -88,4 +88,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81b5d30d2d103204a9b1b3330bfc6036, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillinfo: chuchuchu punch skill
+  skillinfo: bingbing mung mung skill

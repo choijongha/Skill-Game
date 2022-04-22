@@ -8,24 +8,20 @@ public class SkillUnit : MonoBehaviour
 {
     [SerializeField] GameObject skillPanel;
     [SerializeField] GameObject skillInto;
-    private SkillObjectScript skillObject;
-    private Camera mainCamera;
-    private RaycastHit2D hit;
 
+    private RaycastHit2D hit;
     private GraphicRaycaster mRaycaster;
     private PointerEventData mPointerEventData;
     private EventSystem mEventSystem;
+
     GameObject skillInstantiation;
     public TextMeshProUGUI skillInfo;
     List<RaycastResult> results;
+    private bool onClicked = false;
     private void Awake()
     {
-        mainCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
-        skillObject = GameObject.FindGameObjectWithTag("SkillObject").GetComponent<SkillObjectScript>();
-        
         mRaycaster = GameObject.Find("Canvas").GetComponent<GraphicRaycaster>();
         mEventSystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
-
     }
     private void Update()
     {
@@ -43,34 +39,25 @@ public class SkillUnit : MonoBehaviour
             {
                 Debug.Log(hit.collider.name);
                 SkillObjectScript skillObjectScript = GameObject.Find(hit.collider.name).GetComponent<SkillObjectScript>();
-                if (!skillPanel.activeSelf)
+                if (!onClicked)
                 {
+                    onClicked = true;
                     skillPanel.SetActive(true);
                     // 클릭된 오브젝트와 연결된 프리팹 스킬 이미지 오브젝트 연결.
                     skillInstantiation = skillObjectScript.InstantiateSkill();
-                }
-                else if(skillPanel.activeSelf && skillInstantiation.name == hit.collider.name)
+                    skillInfo.text = skillInstantiation.GetComponent<SkillInspector>().skillinfo;
+                } else if(onClicked && skillPanel.activeSelf)
                 {
-
-                }
-                
-
-                // 스킬패널 열림, 닫힘.
-                if (!skillObjectScript.onClicked)
-                {
-                    skillObjectScript.onClicked = true;
-                    
-                    
-                }
-                else
-                {
-                    skillObjectScript.onClicked = false;
-                    skillPanel.SetActive(false);
                     Destroy(skillInstantiation);
-                }
+                    // 클릭된 오브젝트와 연결된 프리팹 스킬 이미지 오브젝트 연결.
+                    skillInstantiation = skillObjectScript.InstantiateSkill();
+                    skillInfo.text = skillInstantiation.GetComponent<SkillInspector>().skillinfo;
+                } 
             }else if(hit.collider == null && results.Count <= 0)
             {
+                onClicked = false;
                 skillPanel.SetActive(false);
+                skillInto.SetActive(false);
                 Destroy(skillInstantiation);
             }
         }

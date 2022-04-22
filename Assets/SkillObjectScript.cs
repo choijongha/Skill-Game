@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class SkillObjectScript : MonoBehaviour
 {
-    public bool onClicked;
     [SerializeField] Transform skillImageTh;
     public GameObject skill;
     public GameObject skills;

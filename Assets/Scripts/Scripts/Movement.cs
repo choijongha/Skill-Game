@@ -4,7 +4,6 @@ using AllUnits;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Movement : Unit
 {
-    private AreaTransitionScript boundaryScript;
     public Vector2 saveMaxPos { get; private set; }
     public Vector2 saveMinPos { get; private set; }
     public LevelDesign levelDesign;
@@ -12,7 +11,6 @@ public class Movement : Unit
     {
         base.Awake();
     }
-
     protected override void Update()
     {
         base.Update();
@@ -20,17 +18,11 @@ public class Movement : Unit
     }
     private void FixedUpdate()
     {
-        // Rigidbody2D.velocity
-        /*playerRb.velocity = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) ;
-        unitAnimator.SetFloat("MoveX", playerRb.velocity.x);
-        unitAnimator.SetFloat("MoveY", playerRb.velocity.y);
-        */
-
-        // Transform.position
-        float moveX = Input.GetAxisRaw("Horizontal");
-        float moveY = Input.GetAxisRaw("Vertical");
-        Vector3 moveVector = new Vector2(moveX, moveY);
-        rb.transform.position += moveVector.normalized * speed * Time.deltaTime;
+        GameObject target = GameObject.FindGameObjectWithTag("Enemy");
+        Vector2 playerPosition = target.transform.position - transform.position;
+        rb.transform.position += (Vector3)playerPosition.normalized * speed * Time.deltaTime;
+        float moveX = playerPosition.x;
+        float moveY = playerPosition.y;
         unitAnimator.SetFloat("MoveX", moveX);
         unitAnimator.SetFloat("MoveY", moveY);
 
@@ -57,16 +49,6 @@ public class Movement : Unit
             isAttackDelay = true;
             unitAnimator.SetBool("IsIdle", false);
             unitAnimator.SetBool("IsMoving", false);
-        }
-    }
-    protected override void OnTriggerEnter2D(Collider2D collision)
-    {
-        base.OnTriggerEnter2D(collision);
-        if (collision.tag == "Boundary")
-        {
-            boundaryScript = collision.GetComponent<AreaTransitionScript>();
-            saveMaxPos = boundaryScript.newMaxCameraBoundary;
-            saveMinPos = boundaryScript.newMinCameraBoundary;
         }
     }
 }

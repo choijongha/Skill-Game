@@ -18,10 +18,13 @@ public class SkillUnit : MonoBehaviour
     public TextMeshProUGUI skillInfo;
     List<RaycastResult> results;
     private bool onClicked = false;
+
+    public Movement playerScript;
     private void Awake()
     {
         mRaycaster = GameObject.Find("Canvas").GetComponent<GraphicRaycaster>();
         mEventSystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
+        playerScript = GameObject.Find("Player").GetComponent<Movement>();
     }
     private void Update()
     {
@@ -46,6 +49,7 @@ public class SkillUnit : MonoBehaviour
                     // 클릭된 오브젝트와 연결된 프리팹 스킬 이미지 오브젝트 연결.
                     skillInstantiation = skillObjectScript.InstantiateSkill();
                     skillInfo.text = skillInstantiation.GetComponent<SkillInspector>().skillinfo;
+                    playerScript.skills.Add(skillInstantiation.GetComponent<SkillInspector>());
                 } else if(onClicked && skillPanel.activeSelf)
                 {
                     Destroy(skillInstantiation);
